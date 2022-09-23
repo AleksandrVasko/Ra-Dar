@@ -1,0 +1,10 @@
+#Разрешаем роботу Яндекса индексацию всего сайта
+User-agent: Yandex
+Allow: /
+#Разрешаем роботу Google индексацию всего сайта
+User-agent: Googlebot
+Allow: /
+#Запрещаем индексацию сайта всем остальным роботам
+User-agent: *
+Disallow: /
+Sitemap: https://ra-dar.su/sitemap.xml

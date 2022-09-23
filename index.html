@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>RA-DAR(T) - Поиск спецтехники и грузоперевозок</title>
+    <meta name="theme-color" content="#ff821b">
+    <meta property="og:image" content="assets/img/favicon/mstile-150x150.png">
+    <meta property="og:title" content="RA-DAR(T)">
+    <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale = 1, user-scalable = no">
+    <meta name="description" content="Программное обеспечение для предоставления автотранспортных услуг и обслуживания, которое помогает вашему бизнесу расти без посредников.
+        Возможность отслеживать доступных исполнителей. Предоставлять заказчикам поиск исполнителей для заявок транспортных услуг и услуг курьера.
+        Возможность отслеживать состояние заявки на карте. Исполнители могут использовать онлайн карту для поиска заявок.
+        Список предложений. Используя наш сервис заказчик может получать заявки от разных исполнителей что позволяет выбрать более выгодный вариант.
+        Выгодные сделки. Возможность обговорить в онлайн чате условия оплаты для предоставления автотранспортных услуг и услуг курьера.
+        Профиль. Возможность указать информацию для исполнителей и заказчиков, а также позволяет облегчить поиск заявок и исполнителей.">
+    <meta name="Keywords" content="услуги техники, услуги экскаватора, услуги погрузчика, услуги автокрана, услуги автовышки,
+        грузоперевозки, такси, пассажиры, перевозка, Taxi, экскаватор, погрузчик, грузовой автомобиль, грузовик, спецтехника, заявки, услуги по перевозкам, заказать траспорт, заказать технику,
+        заказчик услуг, исполнитель услуг, мобильное, mobile,
+        сервис радар, радар, Ра-дар, radar, ra-dar, радар сайт, radar сайт,
+        Радар, RA-DAR(T), RA-DAR,  servis.ra-dar, m.servis.ra-dar,
+        войти радар, войти сервис радар,
+        войти Ра-дар">
+    <link rel="apple-touch-icon" type="image/png" sizes="180x180"
+        href="assets/img/favicon/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="180x180" href="assets/img/favicon/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon/icons.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <?php session_start();
+        if (!isset($_SESSION['city_name'])) {
+        	$user_ip = @$_SERVER['REMOTE_ADDR'];
+         
+        	include_once ('/var/www/www-root/data/server/SxGeo/SxGeo.php');
+        	$SxGeo = new SxGeo('/var/www/www-root/data/server/SxGeo/SxGeoCity.dat', SXGEO_BATCH | SXGEO_MEMORY); 			
+        	$res = $SxGeo->getCityFull($user_ip); 	
+            //print_r($res);
+        	if (!empty($res['city']['name_ru'])) {
+        		$_SESSION['city_id'] = $res['city']['name_ru'];
+        	}} ?>
+</head>
+
+<body id="body">
+    <nav class="navbar navbar-light navbar-expand-md fixed-top pb-5"
+        style="background: linear-gradient(166deg, #ff821b 71px, rgba(255,255,255,0) 100px), linear-gradient(#ffffff 66%, rgba(255,255,255,0) 66%);">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#body" style="color: rgba(255,255,255,0.9);">
+                <img src="assets/img/icons.png" width="40px">RA-DAR
+            </a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1">
+                <span class="visually-hidden">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#primary-top">О нас</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#new">Особенности</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Связаться</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item d-sm-flex justify-content-sm-end"
+                        style="margin: 0 -12px;padding: 5px 12px;background: var(--bs-white);">
+                        <a class="nav-link fs-5 bg-primary border rounded-pill" data-bss-hover-animate="pulse"
+                            href="#download" style="color: rgb(255,255,255);padding-right: 32px;">
+                            <i class="fas fa-mobile-alt mx-4"></i>
+                            Установить
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div>
+        <div id="primary-top"
+            style="background: url(&quot;assets/img/background-01.png&quot;) right / auto no-repeat;padding-top: 75px;">
+            <div class="container mx-auto" style="max-width: 1140px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-normal pulse animated my-4 title top__title">
+                            <strong class="entry__title">Работайте с Нами - зарабатывайте Сами!</strong><br>
+                            <small class="entry__subtitle">Сервис поиска заявок и исполнителей</small>
+                        </h1>
+                        <p class="fw-normal pulse animated my-4 overflow-hidden top__subtitle" id="animtopblock" style="display:none">
+                            Вы являетесь владельцем спец. техники? <br> 
+                            Хотите зарабатывать без посредников и третьих лиц на услугах спец. техники, транспортировке грузов, посылок или пассажиров? <br> 
+                            А может Вам нужны такие услуги, как заказчику?
+                            <br> <br>
+                            Устанавливайте мобильное приложение нажав кнопку «установить» и Вы сможете решить любой вопрос!
+                            </p>
+                        <button
+                            class="btn btn-primary btn-lg d-flex justify-content-center align-items-center rounded-pill"
+                            data-bss-hover-animate="pulse" id="animtopbutton" type="button">
+                            Узнать больше<i class="fas fa-chevron-up fs-4 mx-2" id="chevup" style="display:none;"></i>
+                            <i class="fas fa-chevron-down fs-4 mx-2" id="chevdown"></i>
+                        </button>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-center align-items-center">
+                        <img src="assets/img/9-4k-Plain-iPhone-X1.png" style="width: 83%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="new"
+            style="background: url(&quot;assets/img/background-04.png&quot;) top 13% left / auto no-repeat, url(&quot;assets/img/background-02.png&quot;) top 36% right / auto no-repeat, url(&quot;assets/img/background-03.png&quot;) top 58% left / auto no-repeat, url(&quot;assets/img/background-06.png&quot;) top 81% right / auto no-repeat, url(&quot;assets/img/background-07.png&quot;) top 100% left / auto no-repeat;padding-top: 75px;">
+            <div class="container mx-auto" style="max-width: 1140px;">
+                <div class="row">
+                    <div class="col-md-12 mb-4">
+                        <h1 class="display-5 fw-normal text-center" data-aos="fade" data-aos-duration="950">
+                            <strong class="entry__title">
+                                Программное обеспечение для предоставления автотранспортных услуг и обслуживания,
+                                которое
+                                поможет вашему бизнесу расти без посредников
+                            </strong>
+                        </h1>
+                        <h1 class="display-4 text-center mt-4" data-aos="fade" data-aos-duration="950">
+                            Особенности<br>
+                        </h1>
+                    </div>
+                </div>
+                <div class="row my-5">
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-normal" data-aos="fade-up" data-aos-duration="950">Возможность
+                            отслеживать
+                            доступных исполнителей</h1>
+                        <h1 class="display-6 fw-normal text-muted mb-4" data-aos="fade-up" data-aos-duration="950">
+                            Предоставлять заказчикам
+                            поиск исполнителей для заявок транспортных услуг и услуг курьера</h1>
+                    </div>
+                    <div class="col-md-5 d-flex justify-content-center align-items-start order-last order-md-first">
+                        <img class="focus-img" src="assets/img/telephone-01.png" width="60%" style="min-width: 230px;">
+                    </div>
+                </div>
+                <div class="row my-5">
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-normal" data-aos="fade-up" data-aos-duration="950">
+                            Возможность отслеживать состояние заявки на карте
+                        </h1>
+                        <h1 class="display-6 fw-normal text-muted mb-4" data-aos="fade-up" data-aos-duration="950">
+                            Исполнители могут использовать онлайн карту для поиска заявок
+                        </h1>
+                    </div>
+                    <div class="col-md-5 d-flex justify-content-center align-items-start">
+                        <img class="focus-img" src="assets/img/telephone-02.png" width="60%" style="min-width: 230px;">
+                    </div>
+                </div>
+                <div class="row my-5">
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-normal subtitle" data-aos="fade-up" data-aos-duration="950">Список
+                            предложений
+                        </h1>
+                        <h1 class="display-6 fw-normal text-muted mb-4" data-aos="fade-up" data-aos-duration="950">
+                            Используя наш сервис заказчик может получать заявки от разных исполнителей что позволяет
+                            выбрать более выгодный вариант
+                        </h1>
+                    </div>
+                    <div class="col-md-5 d-flex justify-content-center align-items-start order-last order-md-first">
+                        <img class="focus-img" src="assets/img/telephone-04.png" width="60%" style="min-width: 230px;">
+                    </div>
+                </div>
+                <div class="row my-5">
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-normal subtitle" data-aos="fade-up" data-aos-duration="950">Выгодные
+                            сделки</h1>
+                        <h1 class="display-6 fw-normal text-muted mb-4" data-aos="fade-up" data-aos-duration="950">
+                            Возможность обговорить в онлайн чате условия оплаты для предоставления автотранспортных
+                            услуг и услуг курьера
+                        </h1>
+                    </div>
+                    <div class="col-md-5 d-flex justify-content-center align-items-start">
+                        <img class="focus-img" src="assets/img/telephone-06.png" width="60%" style="min-width: 230px;">
+                    </div>
+                </div>
+                <div class="row my-5">
+                    <div class="col-md-6">
+                        <h1 class="display-5 fw-normal subtitle" data-aos="fade-up" data-aos-duration="950">Профиль</h1>
+                        <h1 class="display-6 fw-normal text-muted mb-4" data-aos="fade-up" data-aos-duration="950">
+                            Возможность указать информацию для исполнителей и заказчиков, а так же облегчает поиск
+                            заявок и исполнителей
+                        </h1>
+                    </div>
+                    <div class="col-md-5 d-flex justify-content-center align-items-start order-last order-md-first">
+                        <img class="focus-img" src="assets/img/telephone-05.png" width="60%" style="min-width: 230px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="download" style="padding-top: 75px;">
+            <div class="container mx-auto" style="max-width: 1140px;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="display-4 text-center entry__title" data-aos="fade-up" data-aos-duration="950">Наше
+                            приложение
+                            доступно на мобильном устройстве!</h1>
+                        <p class="display-6 text-center mt-5 download__text" data-aos="fade-up" data-aos-duration="950">
+                            Скачайте прямо
+                            сейчас, чтобы начать пользоваться сервисом!</p>
+                    </div>
+                </div>
+                <div class="row row-cols-1 row-cols-md-3">
+                    <div class="col d-flex flex-column justify-content-center align-items-center my-4">
+                        <div class="shadow d-flex flex-column border24">
+                            <img class="mx-auto my-3" src="assets/img/nashstore.png" width="90%">
+                            <a class="btn btn-primary btn-lg border rounded-pill my-2 px-5" role="button"
+                                data-bss-hover-animate="pulse"
+                                href="https://store.nashstore.ru/store/6285da6a0a39b26606633993">Скачать</a>
+                        </div>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center align-items-center my-4">
+                        <div class="shadow d-flex flex-column border24">
+                            <img class="mx-auto my-3" src="assets/img/App%20Store%20download.png" width="90%">
+                            <a class="btn btn-primary btn-lg border rounded-pill my-2 px-5" role="button"
+                                data-bss-hover-animate="pulse" data-bs-target="#modal-AppStore"
+                                data-bs-toggle="modal">Открыть</a>
+                        </div>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center align-items-center my-4">
+                        <div class="shadow d-flex flex-column border24">
+                            <img class="mx-auto my-3" src="assets/img/google%20play%20download.png" width="90%">
+                            <a class="btn btn-primary btn-lg border rounded-pill my-2 px-5" role="button"
+                                data-bss-hover-animate="pulse"
+                                href="https://play.google.com/store/apps/details?id=my.radar">Скачать</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" role="dialog" tabindex="-1" id="modal-AppStore">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Добавление ярлыка на домашнем экране iPhone или iPad</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body d-flex flex-column overflow-hidden overflow-scroll-y"
+                                style="max-height: 70vh;">
+                                <p class="lead">В связи с санкционными ограничениями наше приложение не получило доступ
+                                    к публикации на Apple store.</p>
+                                <div class="d-flex align-items-start">
+                                    <div>
+                                        <p class="lead my-2">
+                                            1. Открываем на браузер "Safari"&nbsp;&nbsp;<img
+                                                src="assets/img/helpimg/safari-icon.jpg" width="50px">
+                                        </p>
+                                        <p class="lead">
+                                            2. Заходим по ссылке&nbsp;<a
+                                                href="https://m.servis.ra-dar.su">m.servis.ra-dar.su</a>
+                                        </p>
+                                        <p class="lead">3. Нажимаем значок "Поделиться" (в случае, если нижнее меню не
+                                            активно, следует нажать на экран в нижней части для его появления)</p>
+                                    </div>
+                                    <img src="assets/img/helpimg/flat-1.png" width="50%" style="padding: 5px;">
+                                </div>
+                                <div class="d-flex align-items-start">
+                                    <img src="assets/img/helpimg/flat-2.png" width="50%" style="padding: 5px;">
+                                    <p class="lead">4. В открывшемся меню выбираем "На экран «Домой»"</p>
+                                </div>
+                                <div class="d-flex align-items-start">
+                                    <p class="lead">5. На следующей странице Вы можете выбрать для ярлыка подходящее
+                                        название</p>
+                                    <img src="assets/img/helpimg/flat-3.png" width="50%" style="padding: 5px;">
+                                </div>
+                                <p class="lead">Готово! На домашнем экране сразу же появится ярлык на добавленный вами
+                                    сайт. При нажатии на иконку будет произведен мгновенный переход на веб-ресурс.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="contact" class="d-flex justify-content-center align-items-center position-relative overflow-hidden"
+            style="padding-top: 75px;">
+            <div class="d-flex flex-column align-items-center" style="padding-top: 30px;padding-bottom: 20vh;">
+                <h1 class="display-4 entry__title">
+                    Свяжитесь с нами</h1>
+                <p class="display-6 fw-normal p-2 contact__text">Не стесняйтесь задавать нам любые
+                    вопросы</p>
+                <button class="btn btn-primary btn-lg border rounded-pill d-flex" data-bss-hover-animate="pulse"
+                    type="button" data-bs-target="#modal-emailservice" data-bs-toggle="modal">
+                    <i class="far fa-comment-alt fs-3 mx-2"></i>
+                    Связаться с нами
+                </button>
+                <div class="modal fade" role="dialog" tabindex="-1" id="modal-emailservice">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Письмо администрации</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body d-flex flex-column">
+                                <form method="POST" class="modal-body d-flex flex-column"
+                                    action="https://m.servis.ra-dar.su/server/sendReport.php">
+                                    <textarea class="border-1 form-control-lg my-1" name="message"
+                                        placeholder="Сообщение" style="max-height: 20vh;font-size: 1rem;"></textarea>
+
+                                    <input class="border-1 form-control-lg my-1" type="text" name="city"
+                                        value="<?php print_r($_SESSION['city_id']); ?>" placeholder="Город"
+                                        style="font-size: 1rem;">
+                                    <input class="border-1 form-control-lg my-1" name="name" type="text"
+                                        placeholder="Ваше имя" style="font-size: 1rem;">
+                                    <div class="d-flex flex-row position-relative">
+                                        <select class="border-1 form-select-lg my-1" name="message_type"
+                                            value="Выберите тему" style="width: 100%;font-size: 1rem;">
+                                            <option value="Сообщение для администрации">Сообщение для администрации
+                                            </option>
+                                            <option value="Работа в компании и сотрудничество">Работа в компании и
+                                                сотрудничество</option>
+                                            <option value="Ошибка">Сообщить об ошибке</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down fs-5 position-absolute"
+                                            style="right: 10px; top:20px;"></i>
+                                    </div>
+                                    <div class="d-flex flex-row justify-content-between">
+                                        <input class="border-1 form-control-lg my-1" name="email" type="email"
+                                            placeholder="Электронная почта" style="width: 49%;font-size: 1rem;">
+                                        <input class="border-1 form-control-lg my-1" name="phone" type="tel"
+                                            placeholder="+7(___)___-__-__" style="width: 49%;font-size: 1rem;">
+                                    </div>
+                                    <input class="btn btn-primary btn-lg border rounded-pill my-1"
+                                        data-bss-hover-animate="pulse" type="submit" value="Отправить"
+                                        style="margin: 0 calc(50% - 100px);" />
+                                    <div class="form-check">
+                                        <input class="form-check-input" value="true" type="checkbox" id="formCheck-1"
+                                            checked="">
+                                        <label class="form-check-label" for="formCheck-1"
+                                            style="font-size: 0.75rem;">Отправляя свои персональные данные, я даю
+                                            согласие на их использование и обработку.</label>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="background"></div>
+        </div>
+    </div>
+    <footer class="bg-primary">
+        <div class="container-fluid text-white">
+            <div class="footer-info" style="max-width: 1140px;margin: 0px auto;">
+                <div class="col-md-4 p-3">
+                    <p class="lead text-white m-1"> Контакты:</p> 
+                    <div class="phone-company">
+                         +7 (906) 988 08 78 
+                    </div>
+                    <a class="link-light m-1" href="mailto:sts-it@mail.ru">sts-it@mail.ru</a>
+                    <!--<p class="lead text-white m-1">Рабочий график Пн. — Пт.</p>-->
+                    <div class="d-flex">
+                        <a class="btn btn-primary d-flex justify-content-center align-items-center p-1" role="button"
+                            style="border-radius: 50%;border-style: none;height: 42px;width: 42px;"
+                            href="https://ok.ru/profile/573539022665">
+                            <i class="fab fa-odnoklassniki fs-3" data-bss-hover-animate="pulse"></i>
+                        </a>
+                        <a class="btn btn-primary d-flex justify-content-center align-items-center p-1" role="button"
+                            style="border-radius: 50%;border-style: none;width: 42px;height: 42px;"
+                            href="https://t.me/+zlnjdIqkE1hiODU6">
+                            <i class="fab fa-telegram-plane fs-3" data-bss-hover-animate="pulse"></i>
+                        </a>
+                        <a class="btn btn-primary d-flex justify-content-center align-items-center p-1" role="button"
+                            style="border-radius: 50%;border-style: none;width: 42px;height: 42px;"
+                            href="https://vk.com/id524703139" target="_blank">
+                            <i class="fab fa-vk fs-3" data-bss-hover-animate="pulse"></i>
+                        </a>
+                    </div>
+                    
+                </div>
+                <div class="col-md-4 p-3">
+                    <p class="lead m-1">SiberiaTechnoSystem© 2022 Все права защищены.</p>
+                    
+                </div>
+            </div>
+            <div class="row visually-hidden" style="background: var(--bs-gray-900);">
+                <div class="col-md-12">
+                    <p class="lead text-center m-1">SiberiaTechnoSystem© 2022 Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="assets/js/animations.js"></script>
+</body>
+
+</html>
